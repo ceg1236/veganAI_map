@@ -1,38 +1,87 @@
-.App {
-  text-align: center;
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app-container {
+  display: flex;
+  height: 100vh; /* Use the full height of the viewport */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Full height for the map */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Right half: Buttons and other content */
+.controls-container {
+  width: 50%;
+  padding: 20px;
+  background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: space-between;
+  overflow: scroll;
+}
+
+/* Additional styling for components */
+.controls-container button {
+  margin: 10px 0;
+}
+
+.controls-container input {
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.controls-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.controls-container ul li {
+  padding: 3px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  overflow: scroll;
+}
+
+/* Map container */
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Center the button at the top of the map */
+.search-button {
+  position: absolute;
+  top: 10px;
+  left: 55%;
+  transform: translateX(-50%);
+  z-index: 1;
+  padding: 4px 8px;
+  background-color: #4CAF50;
   color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  /* font-weight: bold; */
 }
 
-.App-link {
-  color: #61dafb;
+.search-button:hover {
+  background-color: #45a049;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Disable default Google Map buttons */
+.map-container button[aria-label="Full screen"], 
+.map-container button[aria-label="Street View"], 
+.map-container div[aria-label="Toggle satellite map"] {
+  display: none;
 }
