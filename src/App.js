@@ -3,24 +3,33 @@ import MapContainer from './components/MapContainer';
 import SearchBar from './components/SearchBar';
 import PlaceList from './components/PlaceList';
 import GPTGrader from './components/GPTGrader';
-import './App.css'; // Import the new CSS file
+import './App.css';
 
 function App() {
   const [places, setPlaces] = useState([]);
   const [currentPlaces, setCurrentPlaces] = useState([]);
   const [gradedPlaces, setGradedPlaces] = useState([]);
 
+  const updateCurrentPlaces = (newPlaces) => {
+    // Only add places that are not already graded
+    const newUnseenPlaces = newPlaces.filter(
+      (place) => !gradedPlaces.some((graded) => graded.name === place.name)
+    );
+    setCurrentPlaces(newUnseenPlaces);
+  };
+
   return (
     <div className="app-container">
-      {/* Left half: Map */}
       <div className="map-container">
-        <MapContainer places={currentPlaces} setCurrentPlaces={setCurrentPlaces} />
+        <MapContainer places={currentPlaces} setCurrentPlaces={updateCurrentPlaces} />
       </div>
-
-      {/* Right half: Buttons and list */}
       <div className="controls-container">
-        <PlaceList currentPlaces={currentPlaces} />
-        <GPTGrader currentPlaces={currentPlaces} gradedPlaces={gradedPlaces} setGradedPlaces={setGradedPlaces} />
+        <PlaceList gradedPlaces={gradedPlaces} currentPlaces={currentPlaces} />
+        <GPTGrader 
+          currentPlaces={currentPlaces} 
+          gradedPlaces={gradedPlaces} 
+          setGradedPlaces={setGradedPlaces} 
+        />
       </div>
     </div>
   );

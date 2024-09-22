@@ -1,0 +1,54 @@
+/* General styles for the place list */
+ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .graded-place-item, .current-place-item {
+    position: relative;
+  }
+  
+  .place-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .place-grade {
+    display: block;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+  
+  .toggle-description-button {
+    font-size: 12px;
+    padding: 4px 8px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .toggle-description-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .place-description {
+    margin-top: 10px;
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  
+  /* Current places styling */
+  .current-place-item {
+    font-size: 16px;
+  }

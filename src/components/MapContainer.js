@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const containerStyle = {
@@ -8,22 +9,57 @@ const containerStyle = {
 };
 
 const defaultCenter = {
-  lat: 40.7128,
+  lat: 40.7128,  // New York City
   lng: -74.0060,
 };
 
 function MapContainer({ places, setCurrentPlaces }) {
-  const mapRef = useRef(null);
+  const mapRef = useRef(null);  // Ref to store map instance
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [mapCenter, setMapCenter] = useState(defaultCenter);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);  // Track map loading
 
+  const locateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setMapCenter(userLocation);
+          if (mapRef.current) {
+            mapRef.current.panTo(userLocation);
+          }
+        },
+        () => {
+          console.warn('Geolocation failed or is not supported by your browser.');
+        }
+      );
+    } else {
+      console.warn('Geolocation is not supported by your browser.');
+    }
+  };
+
+  // Ensure map is loaded before calling Places API or interacting with it
   const searchWithinMap = () => {
+    if (!mapRef.current) {
+      console.warn('Map instance is not ready');
+      return;
+    }
+
     const bounds = mapRef.current.getBounds();
+    if (!bounds) {
+      console.warn('Unable to get bounds of the map');
+      return;
+    }
+
     const service = new window.google.maps.places.PlacesService(mapRef.current);
 
     const request = {
       bounds: bounds,
       type: ['restaurant'],
-    //   keyword: 'vegan',
+      fields: ['place_id', 'geometry', 'name', 'vicinity', 'rating', 'user_ratings_total', 'price_level', 'opening_hours'],
     };
 
     service.nearbySearch(request, (results, status) => {
@@ -35,16 +71,27 @@ function MapContainer({ places, setCurrentPlaces }) {
     });
   };
 
+  useEffect(() => {
+    locateUser();
+  }, []);
+
   return (
     <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={['places']}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={defaultCenter}
-        zoom={12}
-        onLoad={(map) => (mapRef.current = map)}
-        options={{fullscreenControl: false, streetViewControl: false,mapTypeControl: false}}
+        center={mapCenter}
+        zoom={14}
+        onLoad={(map) => {
+          mapRef.current = map;
+          setIsMapLoaded(true);  // Set map as loaded
+        }}
+        options={{
+          fullscreenControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+        }}
       >
-        {/* Render markers for each place */}
+        {/* Render markers */}
         {places.map((place) => (
           <Marker
             key={place.place_id}
@@ -56,7 +103,7 @@ function MapContainer({ places, setCurrentPlaces }) {
           />
         ))}
 
-        {/* Render InfoWindow when marker is clicked */}
+        {/* Render InfoWindow */}
         {selectedPlace && (
           <InfoWindow
             position={{
@@ -72,8 +119,10 @@ function MapContainer({ places, setCurrentPlaces }) {
           </InfoWindow>
         )}
       </GoogleMap>
-      <button className="search-button" onClick={searchWithinMap}>
-        Search Current Area
+
+      {/* Search Button */}
+      <button className="search-button" onClick={searchWithinMap} disabled={!isMapLoaded}>
+        {isMapLoaded ? 'Search Current Area' : 'Loading Map...'}
       </button>
     </LoadScript>
   );
