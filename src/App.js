@@ -21,7 +21,11 @@ function App() {
   return (
     <div className="app-container">
       <div className="map-container">
-        <MapContainer places={currentPlaces} setCurrentPlaces={updateCurrentPlaces} />
+      <MapContainer
+        places={currentPlaces}
+        setCurrentPlaces={updateCurrentPlaces}
+        gradedPlaces={gradedPlaces}  // Add this line
+      />
       </div>
       <div className="controls-container">
         <PlaceList gradedPlaces={gradedPlaces} currentPlaces={currentPlaces} />

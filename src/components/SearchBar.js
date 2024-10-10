@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-function SearchBar({ setPlaces }) {
-  const handleSearch = (e) => {
-    if (e.key === 'Enter') {
-      const service = new window.google.maps.places.AutocompleteService();
-      const request = { input: e.target.value };
+function SearchBar({ setMapCenter }) {
+  const inputRef = useRef(null);
+  const autocompleteRef = useRef(null);
 
-      service.getPlacePredictions(request, (predictions) => {
-        if (predictions && predictions.length > 0) {
-          const place = predictions[0];
-          setPlaces([place]);
-        }
-      });
-    }
-  };
+  useEffect(() => {
+    if (!inputRef.current) return;
 
-  return <input type="text" placeholder="Search for places..." onKeyPress={handleSearch} />;
+    // Initialize the autocomplete service
+    autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current);
+
+    // Add listener for place selection
+    autocompleteRef.current.addListener('place_changed', () => {
+      const place = autocompleteRef.current.getPlace();
+      if (place && place.geometry) {
+        const location = place.geometry.location;
+        setMapCenter({
+          lat: location.lat(),
+          lng: location.lng(),
+        });
+      }
+    });
+  }, [setMapCenter]);
+
+  return <input type="text" ref={inputRef} placeholder="Search for places..." />;
 }
 
 export default SearchBar;

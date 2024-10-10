@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import SearchBar from './SearchBar';  // Import SearchBar component
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -13,11 +14,11 @@ const defaultCenter = {
   lng: -74.0060,
 };
 
-function MapContainer({ places, setCurrentPlaces }) {
-  const mapRef = useRef(null);  // Ref to store map instance
+function MapContainer({ places, setCurrentPlaces, gradedPlaces = [] }) {
+  const mapRef = useRef(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);  // Track map loading
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   const locateUser = () => {
     if (navigator.geolocation) {
@@ -71,6 +72,11 @@ function MapContainer({ places, setCurrentPlaces }) {
     });
   };
 
+  const gradeMap = {};
+  gradedPlaces.forEach((gradedPlace) => {
+    gradeMap[gradedPlace.place_id] = gradedPlace.grade;
+  });
+
   useEffect(() => {
     locateUser();
   }, []);
@@ -83,7 +89,7 @@ function MapContainer({ places, setCurrentPlaces }) {
         zoom={14}
         onLoad={(map) => {
           mapRef.current = map;
-          setIsMapLoaded(true);  // Set map as loaded
+          setIsMapLoaded(true);
         }}
         options={{
           fullscreenControl: false,
@@ -91,36 +97,55 @@ function MapContainer({ places, setCurrentPlaces }) {
           mapTypeControl: false,
         }}
       >
-        {/* Render markers */}
-        {places.map((place) => (
-          <Marker
-            key={place.place_id}
-            position={{
-              lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng(),
-            }}
-            onClick={() => setSelectedPlace(place)}
-          />
-        ))}
+        {places.map((place) => {
+          const grade = gradeMap[place.place_id];
+          return (
+            <Marker
+              key={place.place_id}
+              position={{
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+              }}
+              onClick={() => setSelectedPlace(place)}
+              label={
+                grade
+                  ? {
+                      text: grade,
+                      color: 'black',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                    }
+                  : null
+              }
+            />
+          );
+        })}
 
-        {/* Render InfoWindow */}
-        {selectedPlace && (
-          <InfoWindow
-            position={{
-              lat: selectedPlace.geometry.location.lat(),
-              lng: selectedPlace.geometry.location.lng(),
-            }}
-            onCloseClick={() => setSelectedPlace(null)}
-          >
-            <div>
-              <h2>{selectedPlace.name}</h2>
-              <p>{selectedPlace.vicinity}</p>
-            </div>
-          </InfoWindow>
-        )}
+      {selectedPlace && (
+        <InfoWindow
+          position={{
+            lat: selectedPlace.geometry.location.lat(),
+            lng: selectedPlace.geometry.location.lng(),
+          }}
+          onCloseClick={() => setSelectedPlace(null)}
+        >
+          <div>
+            <h2>{selectedPlace.name}</h2>
+            <p>{selectedPlace.vicinity}</p>
+            {gradeMap[selectedPlace.place_id] && (
+              <p>Grade: {gradeMap[selectedPlace.place_id]}</p>
+            )}
+          </div>
+        </InfoWindow>
+      )}
       </GoogleMap>
 
-      {/* Search Button */}
+      {/* Integrate the SearchBar */}
+      <div className="search-bar-container" style={{ position: 'absolute', top: '10px', left: '10px', zIndex: '10' }}>
+        <SearchBar setMapCenter={setMapCenter} />
+      </div>
+
+      {/* Search Current Area Button */}
       <button className="search-button" onClick={searchWithinMap} disabled={!isMapLoaded}>
         {isMapLoaded ? 'Search Current Area' : 'Loading Map...'}
       </button>

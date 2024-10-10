@@ -32,6 +32,7 @@ function GPTGrader({ currentPlaces, gradedPlaces, setGradedPlaces }) {
       const gptResponse = JSON.parse(chatCompletion.choices[0].message.content);
 
       const newGradedPlaces = currentPlaces.map((place) => ({
+        place_id: place.place_id, // Include place_id
         name: place.name,
         grade: gptResponse[place.name]?.grade || 'N/A',
         explanation: gptResponse[place.name]?.explanation || 'No description available.',
@@ -45,8 +46,8 @@ function GPTGrader({ currentPlaces, gradedPlaces, setGradedPlaces }) {
   };
 
   return (
-    <div>
-      <button onClick={gradePlacesWithGPT}>Grade Places with AI</button>
+    <div className='grade-btn-container'>
+      <button className='grade-btn' onClick={gradePlacesWithGPT}>Grade Places with AI</button>
     </div>
   );
 }

@@ -27,9 +27,6 @@ html, body, #root {
 }
 
 /* Additional styling for components */
-.controls-container button {
-  margin: 10px 0;
-}
 
 .controls-container input {
   margin-bottom: 20px;
@@ -43,13 +40,13 @@ html, body, #root {
 }
 
 .controls-container ul li {
-  padding: 3px;
+  /* padding: 3px; */
   background-color: #fff;
-  border: 1px solid #ddd;
-  margin-bottom: 5px;
+  /* border: 1px solid #ddd; */
+  /* margin-bottom: 5px; */
   border-radius: 5px;
   font-size: 12px;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 /* Map container */
@@ -120,4 +117,56 @@ html, body, #root {
 
 .place-list {
   padding: 10px;
+}
+
+.place-header {
+  margin: 5px 0;
+}
+
+.place-grade-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+p.place-grade {
+  margin: 5px;
+}
+
+button.toggle-description-button {
+  margin: 5px;
+  font-size: 10px;
+  padding: 0px 2px;
+  background: beige;
+  border-radius: 5px;
+}
+
+li.currentPlace-li {
+  margin: 2px 0;
+}
+
+.grade-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button.grade-btn {
+  margin: 5px;
+  font-size: 12px;
+  padding: 4px 4px;
+  background: beige;
+  border-radius: 5px;
+}
+
+.search-bar-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+}
+
+.search-bar-container input {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
