@@ -11,28 +11,24 @@ function App() {
   const [gradedPlaces, setGradedPlaces] = useState([]);
 
   const updateCurrentPlaces = (newPlaces) => {
-    // Only add places that are not already graded
-    const newUnseenPlaces = newPlaces.filter(
-      (place) => !gradedPlaces.some((graded) => graded.name === place.name)
-    );
-    setCurrentPlaces(newUnseenPlaces);
+    setCurrentPlaces(newPlaces);
   };
 
   return (
     <div className="app-container">
       <div className="map-container">
-      <MapContainer
-        places={currentPlaces}
-        setCurrentPlaces={updateCurrentPlaces}
-        gradedPlaces={gradedPlaces}  // Add this line
-      />
+        <MapContainer
+          places={currentPlaces}
+          setCurrentPlaces={updateCurrentPlaces}
+          gradedPlaces={gradedPlaces}
+        />
       </div>
       <div className="controls-container">
         <PlaceList gradedPlaces={gradedPlaces} currentPlaces={currentPlaces} />
-        <GPTGrader 
-          currentPlaces={currentPlaces} 
-          gradedPlaces={gradedPlaces} 
-          setGradedPlaces={setGradedPlaces} 
+        <GPTGrader
+          currentPlaces={currentPlaces}
+          gradedPlaces={gradedPlaces}
+          setGradedPlaces={setGradedPlaces}
         />
       </div>
     </div>

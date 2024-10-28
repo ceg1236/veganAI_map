@@ -24,7 +24,6 @@ ul {
   
   .place-grade {
     display: block;
-    margin-top: 5px;
     font-weight: bold;
   }
   
@@ -37,37 +36,137 @@ ul {
     cursor: pointer;
     border-radius: 4px;
   }
-  
-  .toggle-description-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .place-description {
-    margin-top: 10px;
-    padding-left: 10px;
-    font-size: 14px;
-  }
-  
-  /* Current places styling */
-  .current-place-item {
-    font-size: 16px;
-  }
 
   /* Style the sort button */
-.sort-controls {
+  .sort-controls {
+    display: flex;
+    justify-content: flex-end;
     margin-bottom: 10px;
   }
   
-  .sort-controls button {
-    padding: 8px;
-    background-color: #007bff;
+  .sort-button {
+    padding: 4px 8px;
+    background-color: #007bff; /* Change this to your desired filter color */
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
   }
   
-  .sort-controls button:hover {
-    background-color: #0056b3;
+  .sort-button:hover {
+    background-color: #0056b3; /* Darker shade for hover effect */
   }
+
+.collapsible-header:hover {
+  background-color: #d0d0d0;
+}
+
+/* Optional: Smooth transition for the collapsible content */
+.collapsible-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.collapsible-header h3 {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 14px
+}
+
+.collapsible-header h3 svg {
+  margin-left: 8px;
+}
+
+.place-list-container {
+  padding: 20px;
+}
+
+/* Collapsible Header Styles */
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  padding: 5px;
+  margin-top: 15px;
+  border-radius: 4px;
+}
+
+.collapsible-header svg {
+  font-size: 10px;
+}
+
+.collapsible-header:hover {
+  background-color: #d0d0d0;
+}
+
+.info-text {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  margin: 5px 0;
+  font-size:11px
+}
+
+/* Graded Places List Styles */
+.sort-controls {
+  margin: 10px 0;
+}
+
+.graded-places-list {
+  list-style: none;
+  padding: 0;
+}
+
+.graded-place-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  padding: 7px;
+  margin-bottom: 7px;
+  font-size:11px;
+  font-weight: 400;
+}
+
+.place-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-description-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.place-description {
+  color: #555;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+  padding: 0;
+}
+
+.place-description.expanded {
+  max-height: 100%;
+}
+
+/* Current Places List Styles */
+.current-places-list {
+  list-style: none;
+  padding: 0;
+}
+
+.current-place-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  padding: 7px;
+  margin-bottom: 7px;
+  font-size: 11px;
+}

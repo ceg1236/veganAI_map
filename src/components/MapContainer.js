@@ -72,10 +72,13 @@ function MapContainer({ places, setCurrentPlaces, gradedPlaces = [] }) {
     });
   };
 
-  const gradeMap = {};
-  gradedPlaces.forEach((gradedPlace) => {
-    gradeMap[gradedPlace.place_id] = gradedPlace.grade;
-  });
+  const gradeMap = React.useMemo(() => {
+    const map = {};
+    gradedPlaces.forEach((gradedPlace) => {
+      map[gradedPlace.place_id] = gradedPlace.grade;
+    });
+    return map;
+  }, [gradedPlaces]);
 
   useEffect(() => {
     locateUser();
