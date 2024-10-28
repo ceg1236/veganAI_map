@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-import SearchBar from './SearchBar';  // Import SearchBar component
+import SearchBar from './SearchBar';  
+import './MapContainer.css';
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -75,7 +76,10 @@ function MapContainer({ places, setCurrentPlaces, gradedPlaces = [] }) {
   const gradeMap = React.useMemo(() => {
     const map = {};
     gradedPlaces.forEach((gradedPlace) => {
-      map[gradedPlace.place_id] = gradedPlace.grade;
+      map[gradedPlace.place_id] = {
+        grade: gradedPlace.grade,
+        explanation: gradedPlace.explanation,
+      };
     });
     return map;
   }, [gradedPlaces]);
@@ -101,7 +105,7 @@ function MapContainer({ places, setCurrentPlaces, gradedPlaces = [] }) {
         }}
       >
         {places.map((place) => {
-          const grade = gradeMap[place.place_id];
+          const gradeInfo = gradeMap[place.place_id];
           return (
             <Marker
               key={place.place_id}
@@ -111,11 +115,11 @@ function MapContainer({ places, setCurrentPlaces, gradedPlaces = [] }) {
               }}
               onClick={() => setSelectedPlace(place)}
               label={
-                grade
+                gradeInfo
                   ? {
-                      text: grade,
+                      text: gradeInfo.grade,
                       color: 'black',
-                      fontSize: '14px',
+                      fontSize: '12px',
                       fontWeight: 'bold',
                     }
                   : null
@@ -132,11 +136,14 @@ function MapContainer({ places, setCurrentPlaces, gradedPlaces = [] }) {
           }}
           onCloseClick={() => setSelectedPlace(null)}
         >
-          <div>
+          <div className="info-window-content">
             <h2>{selectedPlace.name}</h2>
             <p>{selectedPlace.vicinity}</p>
             {gradeMap[selectedPlace.place_id] && (
-              <p>Grade: {gradeMap[selectedPlace.place_id]}</p>
+              <>
+                <p>Grade: {gradeMap[selectedPlace.place_id].grade}</p>
+                <p>Description: {gradeMap[selectedPlace.place_id].explanation}</p>
+              </>
             )}
           </div>
         </InfoWindow>

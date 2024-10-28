@@ -1,0 +1,39 @@
+
+.info-window-content {
+    width: 200px; 
+    max-width: 200px; 
+    overflow-wrap: break-word; 
+  }
+  
+  .info-window-content h2 {
+    font-size: 14px;
+    margin: 0 0 3px 0;
+  }
+  
+  .info-window-content p {
+    font-size: 12px;
+    margin: 2px 0;
+  }
+
+  .custom-close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .custom-close-button:hover {
+    color: #000;
+  }
+  
+  /* Hide the default close button */
+  .gm-style-iw + div {
+    display: none;
+  }
+  .gm-style-iw-chr {
+    display:none
+  }
