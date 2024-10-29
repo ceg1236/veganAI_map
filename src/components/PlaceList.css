@@ -170,3 +170,60 @@ ul {
   margin-bottom: 7px;
   font-size: 11px;
 }
+
+/* Overlay styles */
+.place-list-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background-color: white;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+  transition: height 0.3s ease;
+  overflow-y: auto;
+}
+
+.place-list-container.full {
+  height: 100%;
+}
+
+.place-list-container.middle {
+  height: 50%;
+}
+
+.place-list-container.minimized {
+  height: 0;
+  overflow: hidden;
+}
+
+.overlay-controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.overlay-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+
+/* Media queries for mobile devices */
+@media (max-width: 768px) {
+  .place-list-container {
+    height: 50%;
+  }
+
+  .place-list-container.expanded {
+    height: 100%;
+  }
+
+  .place-list-container.minimized {
+    height: 0;
+    overflow: hidden;
+  }
+}

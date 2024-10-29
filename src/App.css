@@ -1,3 +1,5 @@
+/* src/App.css */
+
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -9,47 +11,91 @@ html, body, #root {
   height: 100vh; /* Use the full height of the viewport */
 }
 
-.map-wrapper {
+.map-container {
   position: relative;
   width: 100%;
   height: 100%; /* Full height for the map */
 }
 
-/* Right half: Buttons and other content */
 .controls-container {
-  width: 50%;
-  padding: 20px;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: scroll;
-}
-
-/* Additional styling for components */
-
-.controls-container input {
-  margin-bottom: 20px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.controls-container ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-/* Map container */
-.map-container {
+  position: absolute;
+  bottom: 0;
   width: 100%;
+  height: 50%; /* Initial height for the controls container */
+  background-color: white;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+  transition: height 0.3s ease;
+  overflow-y: auto;
+}
+
+.controls-container.full {
   height: 100%;
+}
+
+.controls-container.middle {
+  height: 50%;
+}
+
+.controls-container.minimized {
+  height: 5%;
+  overflow: hidden;
+}
+
+.overlay-controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.overlay-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Media queries for mobile devices */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .map-container {
+    width: 100%;
+    height: 50%; /* Half height for the map */
+  }
+
+  .controls-container {
+    width: 100%;
+    height: 50%; /* Half height for the controls container */
+    padding: 0;
+  }
+
+  .controls-container.full {
+    height: 100%;
+  }
+
+  .controls-container.middle {
+    height: 50%;
+  }
+
+  .controls-container.minimized {
+    height: 5%;
+    overflow: hidden;
+  }
+
+  .map-container.expanded {
+    height: 100%;
+  }
 }
 
 /* Center the button at the top of the map */
 .search-button {
   position: absolute;
-  top: 10px;
-  left: 55%;
+  top: 47px;
+  left: 50%;
   transform: translateX(-50%);
   z-index: 1;
   padding: 4px 8px;
@@ -160,14 +206,15 @@ button.grade-btn {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-/* src/App.css */
+
 .loading-gif {
   width: 20px;
   height: 20px;
   vertical-align: middle;
-}/* src/App.css */
+}
 button.grade-btn {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+

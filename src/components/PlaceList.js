@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaExpand, FaCompress } from 'react-icons/fa';
 import './PlaceList.css';
 
 function PlaceList({ gradedPlaces, currentPlaces }) {
@@ -7,6 +7,7 @@ function PlaceList({ gradedPlaces, currentPlaces }) {
   const [sortOrder, setSortOrder] = useState('asc');
   const [isGradedPlacesVisible, setIsGradedPlacesVisible] = useState(true);
   const [isCurrentPlacesVisible, setIsCurrentPlacesVisible] = useState(true);
+  const [overlayHeight, setOverlayHeight] = useState('middle'); // 'middle', 'full', 'minimized'
 
   // Toggle description visibility
   const toggleDescription = (index) => {
@@ -36,8 +37,33 @@ function PlaceList({ gradedPlaces, currentPlaces }) {
     setIsCurrentPlacesVisible(!isCurrentPlacesVisible);
   };
 
+  // Set overlay height
+  const setOverlayToFull = () => {
+    setOverlayHeight('full');
+  };
+
+  const setOverlayToMiddle = () => {
+    setOverlayHeight('middle');
+  };
+
+  const setOverlayToMinimized = () => {
+    setOverlayHeight('minimized');
+  };
+
   return (
-    <div className="place-list-container">
+    <div className={`controls-container ${overlayHeight}`}>
+      <div className="overlay-controls">
+        <button onClick={setOverlayToFull}>
+          <FaExpand />
+        </button>
+        <button onClick={setOverlayToMiddle}>
+          <FaCompress />
+        </button>
+        <button onClick={setOverlayToMinimized}>
+          <FaChevronDown />
+        </button>
+      </div>
+
       {/* Graded Places Header */}
       <div className="collapsible-header" onClick={toggleGradedPlacesVisibility}>
         <h3>Graded Places</h3>
@@ -65,11 +91,13 @@ function PlaceList({ gradedPlaces, currentPlaces }) {
                         {expandedIndex === index ? 'Less' : 'More'}
                       </button>
                     </div>
-                    {expandedIndex === index && (
-                      <div className="place-description expanded">
-                        <p>{place.explanation}</p>
-                      </div>
-                    )}
+                    <div
+                      className={`place-description ${
+                        expandedIndex === index ? 'expanded' : ''
+                      }`}
+                    >
+                      <p>{place.explanation}</p>
+                    </div>
                   </li>
                 ))}
               </ul>

@@ -151,7 +151,7 @@ function MapContainer({ places, setCurrentPlaces, gradedPlaces = [] }) {
       </GoogleMap>
 
       {/* Integrate the SearchBar */}
-      <div className="search-bar-container" style={{ position: 'absolute', top: '10px', left: '10px', zIndex: '10' }}>
+      <div className="search-bar-container">
         <SearchBar setMapCenter={setMapCenter} />
       </div>
 
