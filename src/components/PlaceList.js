@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaExpand, FaCompress } from 'react-icons/fa';
 import './PlaceList.css';
 
-function PlaceList({ gradedPlaces, currentPlaces }) {
+function PlaceList({ gradedPlaces, currentPlaces, overlayHeight, setOverlayHeight }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');
   const [isGradedPlacesVisible, setIsGradedPlacesVisible] = useState(true);
   const [isCurrentPlacesVisible, setIsCurrentPlacesVisible] = useState(true);
-  const [overlayHeight, setOverlayHeight] = useState('middle'); // 'middle', 'full', 'minimized'
 
   // Toggle description visibility
   const toggleDescription = (index) => {
@@ -51,7 +50,7 @@ function PlaceList({ gradedPlaces, currentPlaces }) {
   };
 
   return (
-    <div className={`controls-container ${overlayHeight}`}>
+    <div className="place-list-container">
       <div className="overlay-controls">
         <button onClick={setOverlayToFull}>
           <FaExpand />

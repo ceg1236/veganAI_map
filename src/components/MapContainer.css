@@ -37,3 +37,7 @@
   .gm-style-iw-chr {
     display:none
   }
+
+  .map-container {
+    height: 100%;
+  }

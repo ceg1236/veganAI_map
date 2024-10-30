@@ -10,7 +10,7 @@ const client = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-function GPTGrader({ currentPlaces, gradedPlaces, setGradedPlaces }) {
+function GPTGrader({ currentPlaces, gradedPlaces, setGradedPlaces, overlayHeight }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const gradePlacesWithGPT = async () => {
@@ -19,35 +19,35 @@ function GPTGrader({ currentPlaces, gradedPlaces, setGradedPlaces }) {
       return;
     }
 
-    setIsLoading(true); // Start loading
+    setIsLoading(true); 
 
     try {
-      // Prepare place data
+      
       const placeData = currentPlaces.map((place) => ({
         name: place.name,
         location: place.vicinity,
         place_id: place.place_id,
       }));
 
-      // Build the prompt
+      
       const prompt = `${prompts['schema_2']}. Here are the places with their locations: 
 ${placeData.map((place) => `${place.name} (${place.location})`).join(', ')}.
 Please provide the output strictly in JSON format without any additional text or comments.`;
 
-      // Call the GPT API
+      
       const chatCompletion = await client.chat.completions.create({
         messages: [{ role: 'user', content: prompt }],
         model: 'gpt-4o',
-        temperature: 0, // Lower temperature for consistent output
+        temperature: 0, 
       });
 
-      // Get the GPT response content
+      
       let gptResponseContent = chatCompletion.choices[0].message.content.trim();
 
-      // Log the GPT response for debugging
+      
       console.log('GPT Response:', gptResponseContent);
 
-      // Attempt to extract JSON from the response
+      
       const jsonMatch = gptResponseContent.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const gptResponse = JSON.parse(jsonMatch[0]);
@@ -94,6 +94,10 @@ Please provide the output strictly in JSON format without any additional text or
     // Return merged array
     return Object.values(placeMap);
   };
+
+  if (overlayHeight === 'minimized') {
+    return null;
+  }
 
   return (
     <div className="grade-btn-container">
